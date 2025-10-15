@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'puntos_destacados',
     'recorridos',
     'unidades',
+    'usuario',
+    'parada',
+    'reservas'
 ]
 
 MIDDLEWARE = [
