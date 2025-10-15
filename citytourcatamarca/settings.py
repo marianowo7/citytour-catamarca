@@ -37,12 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'puntos_destacados',
-    'recorridos',
-    'unidades',
     'usuario',
-    'parada',
-    'reservas'
+    'citytour',
 ]
 
 MIDDLEWARE = [

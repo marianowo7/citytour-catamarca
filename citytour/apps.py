@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ParadaConfig(AppConfig):
+class CitytourConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'parada'
+    name = 'citytour'
