@@ -15,5 +15,8 @@ Bustamante Quiroga Mateo Guillermo MU: 01939
 ## Librerias a instalar:
 
  pip install psycopg2-binary <--- Libreria para conectar django a postgresql
+
+
+ 
  pip install Pillow          <--- Libreria para poder manejar las imagenes que le lleguen desde los formularios
 
