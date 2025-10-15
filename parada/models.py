@@ -1,5 +1,5 @@
 from django.db import models
-from recorrido.models import Recorrido
+from recorridos.models import Recorrido
 
 
 # Create your models here.

@@ -1,6 +1,6 @@
 from django.db import models
 from usuario.models import Usuario
-from recorrido.models import Recorrido
+from recorridos.models import Recorrido
 
 # Create your models here.
 
