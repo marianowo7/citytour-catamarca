@@ -13,7 +13,7 @@ class Usuario (models.Model):
     contraseña = models.CharField(max_length=150)
     correo = models.EmailField(max_length=254, unique=True)
     dni = models.PositiveBigIntegerField(unique=True)
-    rol = models.CharField(max_length=10, choices=ROLES, default='TURISTA')
+    rol = models.CharField(max_length=20, choices=ROLES, default='TURISTA')
 
     def __str__(self):
         return self.nombre
