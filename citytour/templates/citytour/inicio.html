@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
+    <title>CITYTUR CATAMARCA</title>
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <h1 class="text-center text-danger my-3">
+        Bienvenido a CITYTUR CATAMARCA
+      </h1>
+
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand text-white fw-bold" href="{% url 'inicio' %}">
+            CITYTUR
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div
+            class="collapse navbar-collapse justify-content-center"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'recorridos' %}">
+                  Registro de recorridos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'reservas' %}">
+                  Registro de reserva
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-lg flex-fill">
+      <section class="text-center my-4">
+        <p class="lead">
+          Sistema para gestionar recorridos turísticos en la ciudad de
+          <strong>San Fernando del Valle de Catamarca</strong>, brindando a los
+          turistas la posibilidad de consultar información actualizada, reservar
+          recorridos y optimizar la experiencia de viaje.
+        </p>
+        <img
+          src="{% static 'img/catamarca.jpg' %}"
+          class="img-fluid d-block mx-auto rounded shadow"
+          alt="Catamarca"
+        />
+      </section>
+    </main>
+
+    <footer class="text-center p-3 bg-dark text-white mt-auto">
+      Sitio Oficial de
+      <a class="text-white fw-bold" href="{% url 'inicio' %}">
+        CITYTUR CATAMARCA - 2025
+      </a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

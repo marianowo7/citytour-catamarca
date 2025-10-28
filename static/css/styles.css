@@ -1,0 +1,36 @@
+.custom-navbar {
+  background-color: #023e8a;
+}
+
+.custom-navbar .navbar-collapse {
+  justify-content: center; /* centra los links horizontalmente */
+}
+
+.custom-navbar .nav-link {
+  border: 2px solid #ffffff; /* borde blanco */
+  padding: 5px 12px; /* espacio dentro del botón */
+  border-radius: 5px; /* bordes redondeados */
+  text-decoration: none; /* quita subrayado */
+  color: #ffffff; /* color del texto */
+  transition: all 0.3s; /* transición suave */
+  margin: 0 5px; /* espacio entre botones */
+}
+
+.custom-navbar .nav-link:hover {
+  background-color: #90e0ef; /* fondo al pasar el mouse 
+  color: #023e8a;              /* color del texto */
+  border-color: #90e0ef; /* borde también cambia */
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+footer {
+  background-color: #023e8a !important;
+}
+
+.error {
+  color: red;
+}
