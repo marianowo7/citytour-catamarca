@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'citytourcatamarca',
         'USER': 'postgres',
-        'PASSWORD': 'password',
+        'PASSWORD': '124',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -124,6 +124,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # carpeta global "static"
+]
 
 
 # Default primary key field type

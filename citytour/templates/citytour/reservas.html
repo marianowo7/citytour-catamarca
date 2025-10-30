@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <title>Registro de reservas CITYTUR CATAMARCA</title>
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <h1 class="text-center text-red">Bienvenido a CITYTUR CATAMARCA</h1>
+
+      <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container">
+          <a class="navbar-brand text-white" href="{% url 'inicio' %}"
+            >CITYTUR</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div
+            class="collapse navbar-collapse justify-content-center"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'recorridos' %}"
+                  >Registro de recorridos</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Registro de reserva</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-grow-1 d-flex align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg p-4">
+              <h3 class="text-center mb-4">Recorrido</h3>
+              <form action="#" id="miformulario">
+                <div class="mb-3">
+                  <label for="origen" class="form-label"
+                    >Selección de Origen</label
+                  >
+                  <select
+                    name="origen"
+                    id="origen"
+                    class="form-select"
+                    required
+                  >
+                    <option value="córdoba">Estación Terminal</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="destino" class="form-label"
+                    >Selección de Destino</label
+                  >
+                  <select
+                    name="destino"
+                    id="destino"
+                    class="form-select"
+                    required
+                  >
+                    <option value="balcozna">Balcozna</option>
+                    <option value="elrodeo">El Rodeo</option>
+                    <option value="lagruta">La Gruta</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="fecha" class="form-label"
+                    >Fecha del Recorrido</label
+                  >
+                  <input
+                    type="date"
+                    name="fecha"
+                    id="fecha"
+                    class="form-control"
+                    required
+                  />
+                  <label
+                    for="fecha"
+                    id="errorfecha"
+                    class="form-label error"
+                  ></label>
+                </div>
+
+                <div class="mb-3">
+                  <label for="hora" class="form-label">Hora de Salida</label>
+                  <input
+                    type="time"
+                    name="hora"
+                    id="hora"
+                    class="form-control"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="cantidad" class="form-label"
+                    >Cantidad de Pasajes:
+                  </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    id="cantidad"
+                    min="1"
+                    max="50"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="nombre">Nombre: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="nombre"
+                    required
+                  />
+                  <label
+                    for="nombre"
+                    class="form-label error"
+                    id="errornombre"
+                  ></label>
+                </div>
+
+                <div class="mb-3">
+                  <label for="apellido" class="form-label">Apellido: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="apellido"
+                    required
+                  />
+                  <label
+                    for="apellido"
+                    class="form-label error"
+                    id="errorapellido"
+                  ></label>
+                </div>
+
+                <div class="mb-3">
+                  <label for="dni" class="form-label">DNI: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="dni"
+                    pattern="\d{8}"
+                    maxlength="8"
+                    required
+                    placeholder="8 dígitos"
+                  />
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                  <button
+                    type="submit"
+                    id="agregar"
+                    name="agregar"
+                    class="btn btn-success"
+                  >
+                    Agregar
+                  </button>
+                  <button
+                    type="submit"
+                    id="editar"
+                    name="editar"
+                    class="btn btn-warning"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    type="submit"
+                    id="eliminar"
+                    name="eliminar"
+                    class="btn btn-danger"
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    type="reset"
+                    id="cancelar"
+                    name="cancelar"
+                    class="btn btn-secondary"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="text-center p-3 text-white">
+      Sitio Oficial de
+      <a class="text-white fw-bold" href="index.html">CITYTUR CATAMARCA-2025</a>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/javascript/reservas.js"></script>
+  </body>
+</html>
