@@ -2,25 +2,17 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registrar Itinerario - CITYTUR</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-
-    <title>CITYTUR CATAMARCA</title>
   </head>
-
   <body class="d-flex flex-column min-vh-100">
-    <header>
-      <h1 class="text-center text-danger my-3">
-        Bienvenido a CITYTOUR CATAMARCA
-      </h1>
-
+    <header class="mb-4">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
           <a class="navbar-brand text-white fw-bold" href="{% url 'inicio' %}">
@@ -75,20 +67,63 @@
       </nav>
     </header>
 
-    <main class="container-lg flex-fill">
-      <section class="text-center my-4">
-        <p class="lead">
-          Sistema para gestionar recorridos turísticos en la ciudad de
-          <strong>San Fernando del Valle de Catamarca</strong>, brindando a los
-          turistas la posibilidad de consultar información actualizada, reservar
-          recorridos y optimizar la experiencia de viaje.
-        </p>
-        <img
-          src="{% static 'img/catamarca.jpg' %}"
-          class="img-fluid d-block mx-auto rounded shadow"
-          alt="Catamarca"
-        />
-      </section>
+    <main class="container flex-grow-1">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <section class="card shadow-sm mb-4 p-4">
+            <h3 class="mb-3">Registrar nuevo Itinerario</h3>
+            <form method="post" novalidate>
+              {% csrf_token %} {{ form.as_p }}
+              <div class="d-flex gap-2 justify-content-center mt-3">
+                <button type="submit" class="btn btn-success">
+                  Guardar Itinerario
+                </button>
+                <button type="reset" class="btn btn-secondary">Limpiar</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="card shadow-sm p-3">
+            <h4 class="mb-3 text-center">Itinerarios existentes</h4>
+            <div class="table-responsive">
+              <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Recorrido</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Observaciones</th>
+                    <th>Unidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for it in itinerarios %}
+                  <tr>
+                    <td>
+                      {{ it.recorrido.nombre }}<br />
+                      <small
+                        >{{ it.recorrido.get_origen_display }} → {{
+                        it.recorrido.get_destino_display }}</small
+                      >
+                    </td>
+                    <td>{{ it.fecha_salida }}</td>
+                    <td>{{ it.hora_salida }}</td>
+                    <td>{{ it.observaciones|default:"-" }}</td>
+                    <td>{{ it.recorrido.unidad.patente }}</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center">
+                      No hay itinerarios registrados
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
     </main>
 
     <footer class="text-center p-3 bg-dark text-white mt-auto">

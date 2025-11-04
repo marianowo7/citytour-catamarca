@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Puntos destacados</title>
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <h1 class="text-center text-danger mt-3">Puntos destacados</h1>
+      <header>
+        <h1 class="text-center text-danger my-3">
+          Bienvenido a CITYTOUR CATAMARCA
+        </h1>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container">
+            <a
+              class="navbar-brand text-white fw-bold"
+              href="{% url 'inicio' %}"
+            >
+              CITYTUR
+            </a>
+
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div
+              class="collapse navbar-collapse justify-content-center"
+              id="navbarSupportedContent"
+            >
+              <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'recorridos' %}">
+                    Registro de recorridos
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'reservas' %}">
+                    Registro de reserva
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'registrar_unidad' %}">
+                    Registrar unidad
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'registrar_itinerario' %}">
+                    Registrar itinerarios
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'puntos_destacados' %}">
+                    Registrar Puntos Destacados
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+    </header>
+
+    <main class="container my-5 flex-grow-1">
+      <section class="card shadow p-4 mx-auto" style="max-width: 600px">
+        <h4 class="text-center mb-3">Agregar nuevo punto destacado</h4>
+        <form method="post">
+          {% csrf_token %} {{ form.as_p }}
+          <div class="text-center mt-3">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="reset" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="mt-5">
+        <h3 class="text-center mb-3">Listado de puntos destacados</h3>
+        <table class="table table-striped table-hover text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Ubicación</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in puntos %}
+            <tr>
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.descripcion }}</td>
+              <td>{{ p.ubicacion }}</td>
+              <td>
+                <a
+                  href="{% url 'editar_punto' p.id %}"
+                  class="btn btn-warning btn-sm"
+                  >Editar</a
+                >
+                <a
+                  href="{% url 'eliminar_punto' p.id %}"
+                  class="btn btn-danger btn-sm"
+                  >Eliminar</a
+                >
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4">No hay puntos destacados registrados</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer class="text-center p-3 bg-dark text-white mt-auto">
+      Sitio Oficial de
+      <a class="text-white fw-bold" href="{% url 'inicio' %}">
+        CITYTUR CATAMARCA - 2025
+      </a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

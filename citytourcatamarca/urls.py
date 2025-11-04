@@ -21,6 +21,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('citytour.urls')),  # 👈 conecta las URLs de tu app
+    path('', include('citytour.urls')),
 
 ]
