@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RecorridoForm
 from .models import Recorrido
@@ -8,6 +9,7 @@ from .models import Itinerario
 from .models import PuntoDestacado
 from .forms import PuntoDestacadoForm
 
+@login_required
 def editar_punto(request, id):
     punto = get_object_or_404(PuntoDestacado, id=id)
     if request.method == 'POST':
@@ -19,6 +21,7 @@ def editar_punto(request, id):
         form = PuntoDestacadoForm(instance=punto)
     return render(request, 'citytour/editar_punto.html', {'form': form, 'punto': punto})
 
+@login_required
 def eliminar_punto(request, id):
     punto = get_object_or_404(PuntoDestacado, id=id)
     if request.method == 'POST':
@@ -26,6 +29,8 @@ def eliminar_punto(request, id):
         return redirect('puntos_destacados')
     return render(request, 'citytour/eliminar_punto.html', {'punto': punto})
 
+
+@login_required
 def puntos_destacados(request):
     puntos = PuntoDestacado.objects.all()
     if request.method == 'POST':
@@ -38,6 +43,7 @@ def puntos_destacados(request):
     return render(request, 'citytour/puntos_destacados.html', {'form': form, 'puntos': puntos})
 
 
+@login_required 
 def registrar_itinerario(request):
     if request.method == 'POST':
         form = ItinerarioForm(request.POST)
@@ -56,9 +62,11 @@ def registrar_itinerario(request):
         'recorridos': recorridos
     })
 
+@login_required
 def inicio(request):
     return render(request, 'citytour/inicio.html')
 
+@login_required
 def recorridos(request):
     if request.method == 'POST':
         form = RecorridoForm(request.POST)
@@ -71,10 +79,12 @@ def recorridos(request):
     recorridos = form.Meta.model.objects.all()
     return render(request, 'citytour/recorridos.html', {'form': form, 'recorridos': recorridos})
 
+@login_required
 def reservas(request):
     itinerarios = Itinerario.objects.all()
     return render(request, 'citytour/reservas.html', {'itinerarios': itinerarios})
 
+@login_required
 def registrar_unidad(request):
     if request.method == 'POST':
         form = UnidadForm(request.POST)
@@ -87,6 +97,7 @@ def registrar_unidad(request):
     unidades = Unidad.objects.all()
     return render(request, 'registrar_unidad.html', {'form': form, 'unidades': unidades})
 
+@login_required
 def editar_unidad(request, id):
     unidad = get_object_or_404(Unidad, id=id)
     if request.method == 'POST':
@@ -98,6 +109,7 @@ def editar_unidad(request, id):
         form = UnidadForm(instance=unidad)
     return render(request, 'citytour/editar_unidad.html', {'form': form, 'unidad': unidad})
 
+@login_required
 def eliminar_unidad(request, id):
     unidad = get_object_or_404(Unidad, id=id)
     if request.method == 'POST':
@@ -105,6 +117,7 @@ def eliminar_unidad(request, id):
         return redirect('registrar_unidad')
     return render(request, 'citytour/eliminar_unidad.html', {'unidad': unidad})
 
+@login_required
 def editar_recorrido(request, id):
     recorrido = get_object_or_404(Recorrido, id=id)
     if request.method == 'POST':
@@ -116,6 +129,7 @@ def editar_recorrido(request, id):
         form = RecorridoForm(instance=recorrido)
     return render(request, 'citytour/editar_recorrido.html', {'form': form, 'recorrido': recorrido})
 
+@login_required
 def eliminar_recorrido(request, id):
     recorrido = get_object_or_404(Recorrido, id=id)
     if request.method == 'POST':
