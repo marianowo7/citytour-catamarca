@@ -9,10 +9,11 @@
       rel="stylesheet"
     />
   </head>
-  <body class="container mt-5">
+
+  <body class="d-flex flex-column min-vh-100">
     <header>
       <h1 class="text-center text-danger my-3">
-        Bienvenido a CITYTOUR CATAMARCA
+        Bienvenido a CITYTUR CATAMARCA
       </h1>
 
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -49,7 +50,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'registrar_unidad' %}">
+                <a class="nav-link active" href="{% url 'registrar_unidad' %}">
                   Registrar unidad
                 </a>
               </li>
@@ -68,21 +69,60 @@
         </div>
       </nav>
     </header>
-    <h2>Registrar nueva unidad</h2>
 
-    <form method="post" class="mb-4">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Guardar Unidad</button>
-    </form>
+    <main class="container my-5 flex-grow-1">
+      <section class="card shadow p-4 mx-auto" style="max-width: 600px">
+        <h2 class="text-center mb-3">Registrar nueva unidad</h2>
+        <form method="post">
+          {% csrf_token %} {{ form.as_p }}
+          <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary">
+              Guardar Unidad
+            </button>
+            <button type="reset" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </section>
 
-    <h4>Unidades existentes</h4>
-    <ul>
-      {% for u in unidades %}
-      <li>{{ u.patente }} - {{ u.get_estado_vehiculo_display }}</li>
-      {% empty %}
-      <li>No hay unidades registradas</li>
-      {% endfor %}
-    </ul>
+      <section class="mt-5">
+        <h3 class="text-center mb-3">Unidades existentes</h3>
+        <table class="table table-striped table-hover text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Patente</th>
+              <th>Cantidad de Asientos</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for u in unidades %}
+            <tr>
+              <td>{{ u.patente }}</td>
+              <td>{{ u.cantidad_asientos }}</td>
+              <td>{{ u.get_estado_display }}</td>
+              <td>
+                <a
+                  href="{% url 'editar_unidad' u.id %}"
+                  class="btn btn-warning btn-sm"
+                  >Editar</a
+                >
+                <a
+                  href="{% url 'eliminar_unidad' u.id %}"
+                  class="btn btn-danger btn-sm"
+                  >Eliminar</a
+                >
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4">No hay unidades registradas</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </main>
 
     <footer class="text-center p-3 bg-dark text-white mt-auto">
       Sitio Oficial de

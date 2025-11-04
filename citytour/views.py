@@ -55,7 +55,6 @@ def registrar_itinerario(request):
         'itinerarios': itinerarios,
         'recorridos': recorridos
     })
-# Create your views here.
 
 def inicio(request):
     return render(request, 'citytour/inicio.html')
@@ -87,3 +86,39 @@ def registrar_unidad(request):
     
     unidades = Unidad.objects.all()
     return render(request, 'registrar_unidad.html', {'form': form, 'unidades': unidades})
+
+def editar_unidad(request, id):
+    unidad = get_object_or_404(Unidad, id=id)
+    if request.method == 'POST':
+        form = UnidadForm(request.POST, instance=unidad)
+        if form.is_valid():
+            form.save()
+            return redirect('registrar_unidad')
+    else:
+        form = UnidadForm(instance=unidad)
+    return render(request, 'citytour/editar_unidad.html', {'form': form, 'unidad': unidad})
+
+def eliminar_unidad(request, id):
+    unidad = get_object_or_404(Unidad, id=id)
+    if request.method == 'POST':
+        unidad.delete()
+        return redirect('registrar_unidad')
+    return render(request, 'citytour/eliminar_unidad.html', {'unidad': unidad})
+
+def editar_recorrido(request, id):
+    recorrido = get_object_or_404(Recorrido, id=id)
+    if request.method == 'POST':
+        form = RecorridoForm(request.POST, instance=recorrido)
+        if form.is_valid():
+            form.save()
+            return redirect('recorridos')
+    else:
+        form = RecorridoForm(instance=recorrido)
+    return render(request, 'citytour/editar_recorrido.html', {'form': form, 'recorrido': recorrido})
+
+def eliminar_recorrido(request, id):
+    recorrido = get_object_or_404(Recorrido, id=id)
+    if request.method == 'POST':
+        recorrido.delete()
+        return redirect('recorridos')
+    return render(request, 'citytour/eliminar_recorrido.html', {'recorrido': recorrido})

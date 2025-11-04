@@ -128,6 +128,7 @@
               <th>Fecha</th>
               <th>Hora</th>
               <th>Unidad</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody>
@@ -140,6 +141,18 @@
               <td>{{ r.fecha_salida }}</td>
               <td>{{ r.hora_salida }}</td>
               <td>{{ r.unidad.patente }}</td>
+              <td>
+                <a
+                  href="{% url 'editar_recorrido' r.id %}"
+                  class="btn btn-warning btn-sm"
+                  >Editar</a
+                >
+                <a
+                  href="{% url 'eliminar_recorrido' r.id %}"
+                  class="btn btn-danger btn-sm"
+                  >Eliminar</a
+                >
+              </td>
             </tr>
             {% empty %}
             <tr>
