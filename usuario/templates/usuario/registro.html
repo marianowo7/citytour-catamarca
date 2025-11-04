@@ -46,3 +46,51 @@
           <div class="mb-3">
             <label for="dni" class="form-label">DNI</label>
             <input
+              type="number"
+              class="form-control"
+              id="dni"
+              name="dni"
+              placeholder="Ej: 12345678"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="contraseña" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="contraseña"
+              name="contraseña"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="rol" class="form-label">Rol</label>
+            <select id="rol" name="rol" class="form-select">
+              <option value="TURISTA">Turista</option>
+              <option value="OPERADOR">Operador</option>
+              <option value="ADMIN">Administrador</option>
+            </select>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-success w-100">
+              Registrarme
+            </button>
+          </div>
+        </form>
+
+        <p class="text-center mt-3">
+          ¿Ya tenés cuenta?
+          <a href="{% url 'login' %}" class="text-decoration-none">
+            Iniciá sesión
+          </a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="text-center p-3 bg-dark text-white mt-auto">
+      Sitio Oficial de CITYTUR CATAMARCA - 2025
+    </footer>
+  </body>
+</html>
