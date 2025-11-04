@@ -22,8 +22,6 @@ class RecorridoForm(forms.ModelForm):
             'descripcion',
             'origen',
             'destino',
-            'fecha_salida',
-            'hora_salida',
             'unidad',
             'puntos_destacados',
 

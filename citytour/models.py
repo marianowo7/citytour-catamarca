@@ -33,8 +33,6 @@ class Recorrido(models.Model):
 
     origen = models.CharField(max_length=3, choices=ORIGENES, default='TER')
     destino = models.CharField(max_length=3, choices=DESTINOS)
-    fecha_salida = models.DateField()
-    hora_salida = models.TimeField()
     unidad = models.ForeignKey('Unidad', on_delete=models.PROTECT)
     puntos_destacados = models.ManyToManyField('PuntoDestacado', blank=True, related_name='recorridos')
 
