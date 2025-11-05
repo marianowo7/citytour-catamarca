@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,12 +11,14 @@
       rel="stylesheet"
     />
 
-    <title>Registro de reservas CITYTUR CATAMARCA</title>
+    <title>Registro de reservas - CITYTUR CATAMARCA</title>
   </head>
 
   <body class="d-flex flex-column min-vh-100">
     <header>
-      <h1 class="text-center text-red">Bienvenido a CITYTUR CATAMARCA</h1>
+      <h1 class="text-center text-danger my-3">
+        Bienvenido a CITYTUR CATAMARCA
+      </h1>
 
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -98,130 +100,103 @@
       </nav>
     </header>
 
-    <main class="flex-grow-1 d-flex align-items-center">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-6 col-lg-4">
-            <div class="card shadow-lg p-4">
-              <h3 class="text-center mb-4">Recorrido</h3>
-              <form action="#" id="miformulario">
-                <div class="mb-3">
-                  <label for="itinerario" class="form-label"
-                    >Seleccionar itinerario</label
-                  >
-                  <select
-                    name="itinerario"
-                    id="itinerario"
-                    class="form-select"
-                    required
-                  >
-                    <option value="">-- Elegí un itinerario --</option>
-                    {% for i in itinerarios %}
-                    <option value="{{ i.id }}">
-                      {{ i.recorrido.nombre }} - {{
-                      i.recorrido.get_origen_display }} → {{
-                      i.recorrido.get_destino_display }} ({{ i.fecha_salida }}
-                      {{ i.hora_salida }})
-                    </option>
-                    {% empty %}
-                    <option disabled>No hay itinerarios disponibles</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="cantidad" class="form-label"
-                    >Cantidad de Pasajes:
-                  </label>
-                  <input
-                    class="form-control"
-                    type="number"
-                    id="cantidad"
-                    min="1"
-                    max="50"
-                    required
-                  />
-                </div>
+    <main class="container my-5 flex-grow-1">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="card shadow-lg p-4">
+            <h3 class="text-center mb-4 text-primary">Realizar Reserva</h3>
 
-                <div class="mb-3">
-                  <label for="nombre">Nombre: </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="nombre"
-                    required
-                  />
-                  <label
-                    for="nombre"
-                    class="form-label error"
-                    id="errornombre"
-                  ></label>
-                </div>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="itinerario" class="form-label"
+                  >Seleccionar itinerario:</label
+                >
+                <select
+                  name="itinerario"
+                  id="itinerario"
+                  class="form-select"
+                  required
+                >
+                  <option value="">-- Elegí un itinerario --</option>
+                  {% for i in itinerarios %}
+                  <option value="{{ i.id }}">
+                    {{ i.recorrido.nombre }} - 
+                    {{ i.recorrido.get_origen_display}} → 
+                    {{ i.recorrido.get_destino_display }} 
+                    ({{ i.fecha_salida }} {{ i.hora_salida }})
+                  </option>
+                  {% empty %}
+                  <option disabled>No hay itinerarios disponibles</option>
+                  {% endfor %}
+                </select>
+              </div>
 
-                <div class="mb-3">
-                  <label for="apellido" class="form-label">Apellido: </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="apellido"
-                    required
-                  />
-                  <label
-                    for="apellido"
-                    class="form-label error"
-                    id="errorapellido"
-                  ></label>
-                </div>
+              <div class="mb-3">
+                <label for="cantidad_pasajeros" class="form-label"
+                  >Cantidad de Pasajes:</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="cantidad_pasajeros"
+                  name="cantidad_pasajeros"
+                  min="1"
+                  max="50"
+                  required
+                />
+              </div>
 
-                <div class="mb-3">
-                  <label for="dni" class="form-label">DNI: </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="dni"
-                    pattern="\d{8}"
-                    maxlength="8"
-                    required
-                    placeholder="8 dígitos"
-                  />
-                </div>
-
-                <div class="d-flex flex-wrap gap-2 justify-content-center">
-                  <button
-                    type="submit"
-                    id="agregar"
-                    name="agregar"
-                    class="btn btn-success"
-                  >
-                    Agregar
-                  </button>
-                  <!-- <button
-                    type="submit"
-                    id="editar"
-                    name="editar"
-                    class="btn btn-warning"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    type="submit"
-                    id="eliminar"
-                    name="eliminar"
-                    class="btn btn-danger"
-                  >
-                    Eliminar
-                  </button>
-                  <button
-                    type="reset"
-                    id="cancelar"
-                    name="cancelar"
-                    class="btn btn-secondary"
-                  >
-                    Cancelar
-                  </button> -->
-                </div>
-              </form>
-            </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-success w-100">
+                  Confirmar Reserva
+                </button>
+              </div>
+            </form>
           </div>
+        </div>
+      </div>
+
+      <!-- Tabla de reservas -->
+      <div class="mt-5">
+        <h3 class="text-center mb-3">
+          {% if user.rol == "TURISTA" %} Mis Reservas {% else %} Listado de
+          Reservas {% endif %}
+        </h3>
+
+        <div class="table-responsive">
+          <table
+            class="table table-bordered table-striped text-center align-middle"
+          >
+            <thead class="table-dark">
+              <tr>
+                <th>Itinerario</th>
+                <th>Recorrido</th>
+                <th>Fecha</th>
+                <th>Cantidad</th>
+                {% if user.rol != "TURISTA" %}
+                <th>Usuario</th>
+                {% endif %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for reserva in reservas %}
+              <tr>
+                <td>{{ reserva.itinerario.id }}</td>
+                <td>{{ reserva.itinerario.recorrido.nombre }}</td>
+                <td>{{ reserva.fecha_reserva|date:"d/m/Y H:i" }}</td>
+                <td>{{ reserva.cantidad_pasajeros }}</td>
+                {% if user.rol != "TURISTA" %}
+                <td>{{ reserva.usuario.nombre }}</td>
+                {% endif %}
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5">No hay reservas registradas.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </main>

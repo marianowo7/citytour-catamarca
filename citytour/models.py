@@ -1,5 +1,7 @@
 from django.db import models
 from usuario.models import Usuario
+from django.conf import settings
+from django.utils import timezone
 
 
 class Unidad(models.Model):
@@ -76,9 +78,23 @@ class Itinerario(models.Model):
 
 
 class Reserva(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL,  null=True, blank=True)
-    itinerario = models.ForeignKey(Itinerario, on_delete=models.PROTECT, null=True, blank=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  
+        on_delete=models.CASCADE,
+        related_name='reservas',
+        null=True, 
+        blank=True,
+    )
+    itinerario = models.ForeignKey(
+        Itinerario,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    fecha_reserva = models.DateTimeField(default=timezone.now)
+    cantidad_pasajeros = models.PositiveIntegerField(default=1)
     metodoPago = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Reserva de {self.usuario} - {self.recorrido}"
+        return f"Reserva de {self.usuario.nombre if self.usuario else 'Sin usuario'} - {self.itinerario.recorrido.nombre if self.itinerario else 'Sin itinerario'}"
+

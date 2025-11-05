@@ -14,5 +14,8 @@ urlpatterns = [
     path('puntos_destacados/eliminar/<int:id>/', views.eliminar_punto, name='eliminar_punto'),
     path('recorridos/editar/<int:id>/', views.editar_recorrido, name='editar_recorrido'),
     path('recorridos/eliminar/<int:id>/', views.eliminar_recorrido, name='eliminar_recorrido'),
-
+    path('informes/', views.informes, name='informes'),
+    path('informes/recorridos_activos/', views.informe_recorridos_activos, name='informe_recorridos_activos'),
+    path('informes/reservas_por_recorrido/', views.informe_reservas_por_recorrido, name='informe_reservas_por_recorrido'),
+    path('informes/pasajeros_por_viaje/', views.informe_pasajeros_por_viaje, name='informe_pasajeros_por_viaje'),
 ]

@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Generar informes</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="container my-5">
+    <h1 class="text-center text-danger mb-4">Generar Informes</h1>
+
+    <div class="list-group">
+      <a
+        href="{% url 'informe_recorridos_activos' %}"
+        class="list-group-item list-group-item-action"
+      >
+        Generar informe de recorridos activos
+      </a>
+      <a
+        href="{% url 'informe_reservas_por_recorrido' %}"
+        class="list-group-item list-group-item-action"
+      >
+        Listado de reservas por recorrido
+      </a>
+      <a
+        href="{% url 'informe_pasajeros_por_viaje' %}"
+        class="list-group-item list-group-item-action"
+      >
+        Estadísticas de cantidad de pasajeros por viaje
+      </a>
+    </div>
+  </body>
+</html>

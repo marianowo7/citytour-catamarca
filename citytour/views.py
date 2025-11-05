@@ -9,6 +9,12 @@ from .forms import ItinerarioForm
 from .models import Itinerario
 from .models import PuntoDestacado
 from .forms import PuntoDestacadoForm
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from .models import Recorrido, Reserva
+from django.db import models
+from django.contrib import messages
+
 
 @login_required
 @role_required(['ADMIN'])
@@ -85,10 +91,33 @@ def recorridos(request):
     return render(request, 'citytour/recorridos.html', {'form': form, 'recorridos': recorridos})
 
 @login_required
-@role_required(['TURISTA'])
 def reservas(request):
     itinerarios = Itinerario.objects.all()
-    return render(request, 'citytour/reservas.html', {'itinerarios': itinerarios})
+
+    if request.user.rol == 'TURISTA':
+        reservas = Reserva.objects.filter(usuario=request.user)
+    else:
+        reservas = Reserva.objects.all()
+
+    if request.method == 'POST':
+        itinerario_id = request.POST.get('itinerario')
+        cantidad = request.POST.get('cantidad_pasajeros')
+
+        if itinerario_id and cantidad:
+            itinerario = Itinerario.objects.get(id=itinerario_id)
+            Reserva.objects.create(
+                usuario=request.user,
+                itinerario=itinerario,
+                cantidad_pasajeros=cantidad
+            )
+            return redirect('reservas')
+
+    return render(
+        request,
+        'citytour/reservas.html',
+        {'itinerarios': itinerarios, 'reservas': reservas}
+    )
+
 
 @login_required
 @role_required(['ADMIN'])
@@ -147,3 +176,66 @@ def eliminar_recorrido(request, id):
         recorrido.delete()
         return redirect('recorridos')
     return render(request, 'citytour/eliminar_recorrido.html', {'recorrido': recorrido})
+
+
+def informes(request):
+    return render(request, 'citytour/informes.html')
+
+def informe_recorridos_activos(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="recorridos_activos.pdf"'
+
+    p = canvas.Canvas(response)
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(200, 800, "Informe de Recorridos Activos")
+
+    recorridos = Recorrido.objects.all()
+    y = 760
+    for r in recorridos:
+        texto = f"{r.nombre} - {r.get_origen_display()} → {r.get_destino_display()} - Unidad: {r.unidad.patente}"
+        p.drawString(50, y, texto)
+        y -= 20
+
+    p.showPage()
+    p.save()
+    return response
+
+
+def informe_reservas_por_recorrido(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reservas_por_recorrido.pdf"'
+
+    p = canvas.Canvas(response)
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(180, 800, "Informe de Reservas por Recorrido")
+
+    reservas = Reserva.objects.select_related('itinerario__recorrido')
+    y = 760
+    for r in reservas:
+        texto = f"Recorrido: {r.itinerario.recorrido.nombre} - Pasajero: {r.usuario.nombre} ({r.usuario.dni})"
+        p.drawString(50, y, texto)
+        y -= 20
+
+    p.showPage()
+    p.save()
+    return response
+
+
+def informe_pasajeros_por_viaje(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="pasajeros_por_viaje.pdf"'
+
+    p = canvas.Canvas(response)
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(180, 800, "Estadísticas de Pasajeros por Viaje")
+
+    itinerarios = Reserva.objects.values('itinerario__recorrido__nombre').annotate(total=models.Count('id'))
+    y = 760
+    for i in itinerarios:
+        texto = f"{i['itinerario__recorrido__nombre']}: {i['total']} pasajeros"
+        p.drawString(50, y, texto)
+        y -= 20
+
+    p.showPage()
+    p.save()
+    return response
