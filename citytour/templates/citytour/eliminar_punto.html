@@ -19,90 +19,88 @@
         </h1>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="container">
-            <a
-              class="navbar-brand text-white fw-bold"
-              href="{% url 'inicio' %}"
-            >
-              CITYTUR
-            </a>
+        <div class="container">
+          <a class="navbar-brand text-white fw-bold" href="{% url 'inicio' %}">
+            CITYTOUR
+          </a>
 
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-            <div
-              class="collapse navbar-collapse justify-content-center"
-              id="navbarSupportedContent"
-            >
-              <ul class="navbar-nav mb-2 mb-lg-0">
-                {% if user.rol == "ADMIN" or user.rol == "OPERADOR" %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'recorridos' %}">
-                    Registro de recorridos
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'registrar_unidad' %}">
-                    Registrar unidad
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'registrar_itinerario' %}">
-                    Registrar itinerarios
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'puntos_destacados' %}">
-                    Registrar Puntos Destacados
-                  </a>
-                </li>
-                {% endif %} {% if user.rol == "TURISTA" %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'reservas' %}">
-                    Realizar reserva
-                  </a>
-                </li>
+          <div
+            class="collapse navbar-collapse justify-content-center"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              {% if user.rol == "ADMIN" or user.rol == "OPERADOR" %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'informes' %}">
+                  Informes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'recorridos' %}">
+                  Registro de recorridos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'registrar_unidad' %}">
+                  Registrar unidad
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'registrar_itinerario' %}">
+                  Registrar itinerarios
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'puntos_destacados' %}">
+                  Registrar Puntos Destacados
+                </a>
+              </li>
+              {% endif %} {% if user.rol == "TURISTA" or user.rol == "ADMIN" %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'reservas' %}">
+                  Realizar reserva
+                </a>
+              </li>
 
-                <li class="nav-item">
-                  <span class="nav-link text-info fw-bold">
-                    Hola, {{ user.nombre }}
-                  </span>
-                </li>
+              <li class="nav-item">
+                <span class="nav-link text-info fw-bold">
+                  Hola, {{ user.nombre }}
+                </span>
+              </li>
 
-                <li class="nav-item">
-                  <a
-                    class="nav-link text-danger fw-bold"
-                    href="{% url 'logout' %}"
-                  >
-                    Cerrar sesión
-                  </a>
-                </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link text-danger fw-bold"
+                  href="{% url 'logout' %}"
+                >
+                  Cerrar sesión
+                </a>
+              </li>
 
-                {% else %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'login' %}"
-                    >Iniciar sesión</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'registro' %}"
-                    >Registrarse</a
-                  >
-                </li>
-                {% endif %}
-              </ul>
-            </div>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
+              </li>
+              {% endif %}
+            </ul>
           </div>
-        </nav>
+        </div>
+      </nav>
       </header>
     </header>
 
@@ -120,7 +118,7 @@
     <footer class="text-center p-3 bg-dark text-white mt-auto">
       Sitio Oficial de
       <a class="text-white fw-bold" href="{% url 'inicio' %}">
-        CITYTUR CATAMARCA - 2025
+        CITYTOUR CATAMARCA - 2025
       </a>
     </footer>
 

@@ -14,6 +14,13 @@ from reportlab.pdfgen import canvas
 from .models import Recorrido, Reserva
 from django.db import models
 from django.contrib import messages
+from django.db.models import Sum
+from .models import Itinerario, Reserva
+from django.db.models import Sum
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from .models import Itinerario, Reserva
 
 
 @login_required
@@ -90,33 +97,77 @@ def recorridos(request):
     recorridos = form.Meta.model.objects.all()
     return render(request, 'citytour/recorridos.html', {'form': form, 'recorridos': recorridos})
 
+
+
 @login_required
 def reservas(request):
     itinerarios = Itinerario.objects.all()
 
-    if request.user.rol == 'TURISTA':
+    if request.user.rol == "TURISTA":
         reservas = Reserva.objects.filter(usuario=request.user)
     else:
         reservas = Reserva.objects.all()
 
-    if request.method == 'POST':
-        itinerario_id = request.POST.get('itinerario')
-        cantidad = request.POST.get('cantidad_pasajeros')
+    if request.method == "POST":
+        itinerario_id = request.POST.get("itinerario")
+        cantidad_pasajeros = request.POST.get("cantidad_pasajeros")
 
-        if itinerario_id and cantidad:
+        if itinerario_id and cantidad_pasajeros:
             itinerario = Itinerario.objects.get(id=itinerario_id)
-            Reserva.objects.create(
-                usuario=request.user,
-                itinerario=itinerario,
-                cantidad_pasajeros=cantidad
-            )
-            return redirect('reservas')
+            cantidad_pasajeros = int(cantidad_pasajeros)
 
-    return render(
-        request,
-        'citytour/reservas.html',
-        {'itinerarios': itinerarios, 'reservas': reservas}
-    )
+            reservados = (
+                Reserva.objects.filter(itinerario=itinerario)
+                .aggregate(total=Sum("cantidad_pasajeros"))
+                .get("total")
+                or 0
+            )
+            capacidad_total = itinerario.recorrido.unidad.cantidad_asientos
+            disponibles = capacidad_total - reservados
+
+            if cantidad_pasajeros <= disponibles:
+                Reserva.objects.create(
+                    usuario=request.user,
+                    itinerario=itinerario,
+                    cantidad_pasajeros=cantidad_pasajeros,
+                    metodoPago="No especificado",  
+                    fecha_reserva=timezone.now(),
+                )
+            else:
+                print("No hay suficientes asientos disponibles")
+
+        return redirect("reservas")
+
+    itinerarios_info = []
+    for i in itinerarios:
+        reservados = (
+            Reserva.objects.filter(itinerario=i)
+            .aggregate(total=Sum("cantidad_pasajeros"))
+            .get("total")
+            or 0
+        )
+        capacidad_total = i.recorrido.unidad.cantidad_asientos
+        disponibles = capacidad_total - reservados
+        puntos = i.recorrido.puntos_destacados.all()
+
+        itinerarios_info.append({
+            "id": i.id,
+            "recorrido": i.recorrido,
+            "fecha_salida": i.fecha_salida,
+            "hora_salida": i.hora_salida,
+            "capacidad_total": capacidad_total,
+            "reservados": reservados,
+            "disponibles": disponibles,
+            "puntos": puntos,
+        })
+
+    context = {
+        "itinerarios": itinerarios,
+        "reservas": reservas,
+        "itinerarios_info": itinerarios_info,
+    }
+
+    return render(request, "citytour/reservas.html", context)
 
 
 @login_required
