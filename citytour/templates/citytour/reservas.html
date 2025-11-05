@@ -117,9 +117,10 @@
                     <option value="">-- Elegí un itinerario --</option>
                     {% for i in itinerarios %}
                     <option value="{{ i.id }}">
-                      {{ i.recorrido.nombre }} - {{
-                      i.recorrido.get_origen_display }} → {{
-                      i.recorrido.get_destino_display }} ({{ i.fecha_salida }}
+                      {{ i.recorrido.nombre }} - 
+                      {{ i.recorrido.get_origen_display }} → 
+                      {{ i.recorrido.get_destino_display }} 
+                      ({{ i.fecha_salida }}
                       {{ i.hora_salida }})
                     </option>
                     {% empty %}
