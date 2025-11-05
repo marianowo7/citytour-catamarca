@@ -20,51 +20,8 @@
         <h2 class="text-center mb-3">Crear una cuenta</h2>
 
         <form method="post">
-          {% csrf_token %}
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre completo</label>
-            <input
-              type="text"
-              class="form-control"
-              id="nombre"
-              name="nombre"
-              placeholder="Tu nombre"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="correo" class="form-label">Correo electrónico</label>
-            <input
-              type="email"
-              class="form-control"
-              id="correo"
-              name="correo"
-              placeholder="ejemplo@correo.com"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="dni" class="form-label">DNI</label>
-            <input
-              type="number"
-              class="form-control"
-              id="dni"
-              name="dni"
-              placeholder="Ej: 12345678"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="contraseña" class="form-label">Contraseña</label>
-            <input
-              type="password"
-              class="form-control"
-              id="contraseña"
-              name="contraseña"
-              placeholder="••••••••"
-              required
-            />
-          </div>
+          {% csrf_token %} {{ form.as_p }}
+          <button type="submit" class="btn btn-primary w-100">Ingresar</button>
         </form>
 
         <p class="text-center mt-3">

@@ -19,12 +19,19 @@ def login_view(request):
             correo = form.cleaned_data.get('username')
             contraseña = form.cleaned_data.get('password')
             user = authenticate(request, username=correo, password=contraseña)
-            if user:
+
+            if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('inicio')
+            else:
+                form.add_error(None, "Correo o contraseña incorrectos.")
     else:
         form = LoginForm()
+
     return render(request, 'usuario/login.html', {'form': form})
+
+
+
 
 def logout_view(request):
     logout(request)
