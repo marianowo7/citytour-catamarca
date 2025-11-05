@@ -40,3 +40,11 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.nombre
+
+    @classmethod
+    def get_email_field_name(cls):
+        return 'correo'
+
+    @property
+    def email(self):
+        return self.correo
