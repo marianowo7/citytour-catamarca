@@ -1,0 +1,14 @@
+{% extends 'citytour/registrar_itinerario.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center">Editar Itinerario</h2>
+  <form method="POST" class="mt-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="text-center">
+      <button type="submit" class="btn btn-success">Guardar cambios</button>
+      <a href="{% url 'registrar_itinerario' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

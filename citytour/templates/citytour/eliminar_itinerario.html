@@ -1,0 +1,15 @@
+{% extends 'citytour/registrar_itinerario.html' %}
+{% block content %}
+<div class="container mt-5 text-center">
+  <h2>Eliminar Itinerario</h2>
+  <p>¿Estás seguro de que deseas eliminar el itinerario de
+    <strong>{{ itinerario.recorrido.nombre }}</strong>
+    el <strong>{{ itinerario.fecha_salida }}</strong>?</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'registrar_itinerario' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

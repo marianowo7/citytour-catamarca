@@ -80,6 +80,33 @@ def registrar_itinerario(request):
         'recorridos': recorridos
     })
 
+@login_required
+@role_required(['ADMIN'])
+def editar_itinerario(request, id):
+    itinerario = get_object_or_404(Itinerario, id=id)
+
+    if request.method == 'POST':
+        form = ItinerarioForm(request.POST, instance=itinerario)
+        if form.is_valid():
+            form.save()
+            return redirect('registrar_itinerario')
+    else:
+        form = ItinerarioForm(instance=itinerario)
+
+    return render(request, 'citytour/editar_itinerario.html', {'form': form, 'itinerario': itinerario})
+
+@login_required
+@role_required(['ADMIN'])
+def eliminar_itinerario(request, id):
+    itinerario = get_object_or_404(Itinerario, id=id)
+
+    if request.method == 'POST':
+        itinerario.delete()
+        return redirect('registrar_itinerario')
+
+    return render(request, 'citytour/eliminar_itinerario.html', {'itinerario': itinerario})
+
+
 def inicio(request):
     return render(request, 'citytour/inicio.html')
 
@@ -90,12 +117,24 @@ def recorridos(request):
         form = RecorridoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('recorridos')  # recarga la misma página
+            return redirect('recorridos') 
     else:
         form = RecorridoForm()
 
     recorridos = form.Meta.model.objects.all()
     return render(request, 'citytour/recorridos.html', {'form': form, 'recorridos': recorridos})
+
+@login_required
+def cancelar_reserva(request, reserva_id):
+    reserva = get_object_or_404(Reserva, id=reserva_id)
+
+    if request.user == reserva.usuario or request.user.rol in ["ADMIN", "OPERADOR"]:
+        reserva.delete()  # 🔹 Al eliminarla, automáticamente se liberan los asientos
+        messages.success(request, "Reserva cancelada exitosamente.")
+    else:
+        messages.error(request, "No tenés permiso para cancelar esta reserva.")
+
+    return redirect("reservas")
 
 
 
@@ -260,12 +299,28 @@ def informe_reservas_por_recorrido(request):
     p.setFont("Helvetica-Bold", 14)
     p.drawString(180, 800, "Informe de Reservas por Recorrido")
 
-    reservas = Reserva.objects.select_related('itinerario__recorrido')
+    reservas = Reserva.objects.select_related('itinerario__recorrido', 'usuario')
+
     y = 760
+    total_pasajeros = 0
+
     for r in reservas:
-        texto = f"Recorrido: {r.itinerario.recorrido.nombre} - Pasajero: {r.usuario.nombre} ({r.usuario.dni})"
+        texto = (
+            f"Recorrido: {r.itinerario.recorrido.nombre} | "
+            f"Pasajero: {r.usuario.nombre} ({r.usuario.dni}) | "
+            f"Asientos: {r.cantidad_pasajeros}"
+        )
         p.drawString(50, y, texto)
         y -= 20
+
+        total_pasajeros += r.cantidad_pasajeros
+        if y < 50:  
+            p.showPage()
+            y = 800
+            p.setFont("Helvetica", 12)
+
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(50, y - 20, f"Total de pasajeros registrados: {total_pasajeros}")
 
     p.showPage()
     p.save()
@@ -280,12 +335,65 @@ def informe_pasajeros_por_viaje(request):
     p.setFont("Helvetica-Bold", 14)
     p.drawString(180, 800, "Estadísticas de Pasajeros por Viaje")
 
-    itinerarios = Reserva.objects.values('itinerario__recorrido__nombre').annotate(total=models.Count('id'))
+    itinerarios = (
+        Reserva.objects
+        .values('itinerario__recorrido__nombre')
+        .annotate(total_pasajeros=Sum('cantidad_pasajeros'))
+        .order_by('itinerario__recorrido__nombre')
+    )
+
     y = 760
+    total_general = 0
+
     for i in itinerarios:
-        texto = f"{i['itinerario__recorrido__nombre']}: {i['total']} pasajeros"
+        texto = f"{i['itinerario__recorrido__nombre']}: {i['total_pasajeros'] or 0} pasajeros"
         p.drawString(50, y, texto)
         y -= 20
+        total_general += i['total_pasajeros'] or 0
+
+        if y < 50:
+            p.showPage()
+            y = 800
+            p.setFont("Helvetica", 12)
+
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(50, y - 20, f"Total general de pasajeros: {total_general}")
+
+    p.showPage()
+    p.save()
+    return response
+
+@login_required
+@role_required(['ADMIN'])
+def informe_puntos_mas_visitados(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="puntos_turisticos_mas_visitados.pdf"'
+
+    p = canvas.Canvas(response)
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(150, 800, "Informe de Puntos Turísticos más Visitados")
+
+    puntos = (
+        PuntoDestacado.objects.annotate(
+            total_reservas=Sum("recorridos__itinerario__reserva__cantidad_pasajeros")
+        )
+        .filter(total_reservas__gt=0)
+        .order_by("-total_reservas")
+    )
+
+    y = 760
+    p.setFont("Helvetica", 12)
+    if puntos.exists():
+        for pto in puntos:
+            texto = f"{pto.nombre}: {int(pto.total_reservas)} pasajeros"
+            p.drawString(60, y, texto)
+            y -= 20
+            if y < 50:
+                p.showPage()
+                p.setFont("Helvetica", 12)
+                y = 800
+    else:
+        p.drawString(60, 760, "No hay datos de reservas asociadas a puntos turísticos.")
 
     p.showPage()
     p.save()

@@ -97,4 +97,3 @@ class Reserva(models.Model):
 
     def __str__(self):
         return f"Reserva de {self.usuario.nombre if self.usuario else 'Sin usuario'} - {self.itinerario.recorrido.nombre if self.itinerario else 'Sin itinerario'}"
-

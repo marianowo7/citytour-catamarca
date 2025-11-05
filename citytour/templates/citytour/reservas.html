@@ -151,6 +151,7 @@
                     {% if user.rol != "TURISTA" %}
                     <th>Usuario</th>
                     {% endif %}
+                    <th>Acción</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -163,15 +164,25 @@
                     {% if user.rol != "TURISTA" %}
                     <td>{{ reserva.usuario.nombre }}</td>
                     {% endif %}
+                    <td>
+                      <a
+                        href="{% url 'cancelar_reserva' reserva.id %}"
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('¿Estás seguro de cancelar esta reserva?');"
+                      >
+                        Cancelar
+                      </a>
+                    </td>
                   </tr>
                   {% empty %}
                   <tr>
-                    <td colspan="5">No hay reservas registradas.</td>
+                    <td colspan="6">No hay reservas registradas.</td>
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
+
           </div>
         </div>
 

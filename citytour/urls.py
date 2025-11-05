@@ -18,4 +18,9 @@ urlpatterns = [
     path('informes/recorridos_activos/', views.informe_recorridos_activos, name='informe_recorridos_activos'),
     path('informes/reservas_por_recorrido/', views.informe_reservas_por_recorrido, name='informe_reservas_por_recorrido'),
     path('informes/pasajeros_por_viaje/', views.informe_pasajeros_por_viaje, name='informe_pasajeros_por_viaje'),
+    path("reservas/cancelar/<int:reserva_id>/", views.cancelar_reserva, name="cancelar_reserva"),
+    path('itinerarios/editar/<int:id>/', views.editar_itinerario, name='editar_itinerario'),
+    path('itinerarios/eliminar/<int:id>/', views.eliminar_itinerario, name='eliminar_itinerario'),
+    path('informes/puntos_mas_visitados/', views.informe_puntos_mas_visitados, name='informe_puntos_mas_visitados'),
+
 ]
